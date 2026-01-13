@@ -1,126 +1,93 @@
 plugins {
-    id 'java'
-    id 'idea'
+    id 'java-library'
+    id 'com.gradleup.shadow' version '9.3.1'
 }
 
 group = 'net.nightraid'
 version = '1.0.0'
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
+description = 'NightRaid RPG Skills System - Complete mcMMO alternative for Hytale'
 
 repositories {
+    mavenLocal()
     mavenCentral()
-    mavenLocal() // For locally installed Hytale API
-    
-    // Try Hytale repository (may not be available yet)
-    maven {
-        name = 'Hytale Repository'
-        url = 'https://maven.hytale.com/releases'
-        // Don't fail if repository doesn't exist
-        allowInsecureProtocol = false
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
-    }
-}
-
-configurations {
-    // Make compileOnly configuration not fail on missing dependencies
-    compileOnly {
-        transitive = false
-    }
 }
 
 dependencies {
-    // Hytale Server API - Install locally if not in Maven Central
-    // See QUICKSTART.md for installation instructions
-    compileOnly(group: 'com.hypixel.hytale', name: 'hytale-server', version: '1.0.0') {
-        // Don't fail build if not found
-        transitive = false
-    }
+    // Hytale Server API (provided by server at runtime)
+    compileOnly(files('libs/hytale-server.jar'))
     
-    // MySQL Driver
+    // Database
     implementation 'com.mysql:mysql-connector-j:8.3.0'
-    
-    // HikariCP for connection pooling
     implementation 'com.zaxxer:HikariCP:5.1.0'
     
-    // Logging (SLF4J)
+    // JSON
+    implementation 'com.google.code.gson:gson:2.10.1'
+    
+    // Logging
     implementation 'org.slf4j:slf4j-api:2.0.11'
     implementation 'org.slf4j:slf4j-simple:2.0.11'
+    
+    // Annotations
+    implementation 'org.jetbrains:annotations:24.1.0'
+    
+    // Test dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-processResources {
-    filesMatching('manifest.json') {
-        expand project.properties
+tasks {
+    // Configure Java compilation
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release = 25  // Java 25 as confirmed by Hytale template
     }
-}
-
-jar {
-    // Include all dependencies in the JAR
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
     
-    // Handle duplicate files
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    
-    // Set manifest attributes
-    manifest {
-        attributes(
-            'Implementation-Title': project.name,
-            'Implementation-Version': project.version,
-            'Main-Class': 'net.nightraid.ncrpg.NCRPG'
-        )
-    }
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    
-    // Don't fail on missing compileOnly dependencies
-    options.compilerArgs += ['-Xlint:-processing', '-Xlint:-path']
-    
-    // Ignore missing Hytale API classes during compilation
-    options.fork = true
-}
-
-// Task to check if Hytale API is available
-task checkHytaleAPI {
-    doLast {
-        def hytaleAPI = configurations.compileOnly.find { 
-            it.name.contains('hytale-server') 
-        }
+    // Configure resource processing
+    processResources {
+        filteringCharset = Charsets.UTF_8.name()
         
-        if (hytaleAPI == null) {
-            logger.warn("""\n
-            ⚠️  WARNING: Hytale Server API not found!
-            ================================================================================
-            The project will compile, but you need to install HytaleServer.jar locally
-            to run the plugin on a Hytale server.
-            
-            Installation instructions:
-            1. Locate HytaleServer.jar in your Hytale installation
-            2. Run: mvn install:install-file -Dfile=HytaleServer.jar \
-                    -DgroupId=com.hypixel.hytale \
-                    -DartifactId=hytale-server \
-                    -Dversion=1.0.0 \
-                    -Dpackaging=jar
-            3. Run: gradle clean build
-            
-            See QUICKSTART.md for detailed instructions.
-            ================================================================================
-            
-            """)
-        } else {
-            logger.lifecycle("✅ Hytale Server API found: ${hytaleAPI.name}")
+        // Replace placeholders in manifest.json
+        def props = [
+            group: project.group,
+            version: project.version,
+            description: project.description
+        ]
+        inputs.properties(props)
+        
+        filesMatching('manifest.json') {
+            expand(props)
         }
+    }
+    
+    // Configure ShadowJar (bundle dependencies)
+    shadowJar {
+        archiveBaseName.set(rootProject.name)
+        archiveClassifier.set('')
+        
+        // Relocate dependencies to avoid conflicts
+        relocate 'com.mysql', 'net.nightraid.ncrpg.libs.mysql'
+        relocate 'com.zaxxer.hikari', 'net.nightraid.ncrpg.libs.hikari'
+        relocate 'com.google.gson', 'net.nightraid.ncrpg.libs.gson'
+        relocate 'org.slf4j', 'net.nightraid.ncrpg.libs.slf4j'
+        
+        // Minimize JAR size (removes unused classes)
+        minimize()
+    }
+    
+    // Configure tests
+    test {
+        useJUnitPlatform()
+    }
+    
+    // Make build depend on shadowJar
+    build {
+        dependsOn(shadowJar)
     }
 }
 
-// Run check before build
-build.dependsOn checkHytaleAPI
+// Configure Java toolchain
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
+}
