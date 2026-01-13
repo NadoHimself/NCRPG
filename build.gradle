@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+group = 'net.nightraid'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'Hytale Repository'
+        url = 'https://maven.hytale.com/releases'
+    }
+}
+
+dependencies {
+    // Hytale Server API
+    compileOnly 'com.hypixel.hytale:hytale-server:1.0.0'
+    
+    // MySQL Driver
+    implementation 'com.mysql:mysql-connector-j:8.3.0'
+    
+    // HikariCP for connection pooling
+    implementation 'com.zaxxer:HikariCP:5.1.0'
+    
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.11'
+}
+
+processResources {
+    filesMatching('manifest.json') {
+        expand project.properties
+    }
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
