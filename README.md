@@ -1,26 +1,29 @@
 # NCRPG - NightRaid RPG Skills System
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://github.com/NadoHimself/NCRPG/actions/workflows/build.yml/badge.svg?branch=hytale-integration)](https://github.com/NadoHimself/NCRPG/actions/workflows/build.yml)
 [![Hytale](https://img.shields.io/badge/Hytale-Plugin-blue.svg)](https://hytale.com)
-[![Java 21+](https://img.shields.io/badge/Java-21%2B-orange.svg)](https://adoptium.net/)
-[![Build Status](https://img.shields.io/badge/Build-Ready-success.svg)](https://github.com/NadoHimself/NCRPG)
+[![Java 25](https://img.shields.io/badge/Java-25-orange.svg)](https://adoptium.net/)
+[![Template Based](https://img.shields.io/badge/Template-Official-success.svg)](https://github.com/realBritakee/hytale-template-plugin)
 
 A complete mcMMO alternative plugin for Hytale featuring 12 fully-featured skills, party system, MySQL database, and active abilities.
 
-## 🚀 Status: ECS-READY & BUILD-READY
+## 🚀 Status: TEMPLATE-BASED & CI/CD-READY
 
 This plugin is **fully implemented** and ready for Hytale Early Access!
 
 ✅ **Complete**: All 6 event listeners implemented  
 ✅ **Complete**: All 12 skills with abilities  
 ✅ **Complete**: Party system & database integration  
-✅ **Complete**: Gradle build configuration  
+✅ **Template-Based**: Built on official Hytale plugin template  
+✅ **CI/CD**: Automatic builds with GitHub Actions  
 ✅ **ECS-Ready**: Architecture notes for Flecs ECS migration  
 📦 **Ready**: Build and deploy on Day 1!
 
 **Quick Start: [QUICKSTART.md](QUICKSTART.md)**  
 **Hytale ECS Guide: [HYTALE-ARCHITECTURE.md](HYTALE-ARCHITECTURE.md)**  
-**Detailed Setup: [SETUP.md](SETUP.md)**
+**Detailed Setup: [SETUP.md](SETUP.md)**  
+**libs/ Directory: [libs/README.md](libs/README.md)**
 
 ---
 
@@ -41,6 +44,14 @@ chmod +x build-local.sh
 ./build-local.sh
 ```
 
+### GitHub Actions (Automatic)
+Every push to `main` or `hytale-integration` triggers an automatic build!
+
+**Download built JARs:**
+1. Go to [Actions tab](https://github.com/NadoHimself/NCRPG/actions)
+2. Click latest workflow run
+3. Download "NCRPG-Plugin" artifact
+
 **Output:** `build/libs/NCRPG-1.0.0.jar` 🎉
 
 ---
@@ -54,6 +65,7 @@ chmod +x build-local.sh
 - **Entity System:** Flecs ECS (not traditional events)
 - **Data Format:** JSON schemas for blocks/items
 - **Scripting:** Visual node-based (Unreal Blueprints style)
+- **Plugin Format:** manifest.json (not plugin.yml)
 
 ### Our Adaptation Strategy
 
@@ -118,7 +130,7 @@ See [HYTALE-ARCHITECTURE.md](HYTALE-ARCHITECTURE.md) for detailed ECS migration 
 ## Quick Start
 
 ### Prerequisites
-- ☕ Java 21 or higher
+- ☕ Java 25 ([Adoptium](https://adoptium.net/))
 - 🎮 Hytale Server (Early Access)
 - 📊 MySQL 8.0+ or MariaDB 10.5+
 
@@ -131,6 +143,8 @@ build-local.bat
 
 # Linux/Mac
 ./build-local.sh
+
+# Or download from GitHub Actions
 ```
 
 **2. Deploy to server**
@@ -181,33 +195,42 @@ All settings in `config.yml`:
 
 ```
 NCRPG/
-├── abilities/          # Active ability cooldown & duration management
-├── commands/          # /skills, /stats, /mcrank, /party
-├── config/            # YAML configuration manager
-├── database/          # MySQL async operations & HikariCP
-├── listeners/         # 6 Hytale event listeners (ECS-adaptable)
+├── .github/
+│   └── workflows/
+│       └── build.yml      # GitHub Actions CI/CD
+├── abilities/             # Active ability cooldown & duration management
+├── commands/              # /skills, /stats, /mcrank, /party
+├── config/                # YAML configuration manager
+├── database/              # MySQL async operations & HikariCP
+├── libs/
+│   └── README.md          # Instructions for hytale-server.jar
+├── listeners/             # 6 Hytale event listeners (ECS-adaptable)
 │   ├── BlockBreakListener      (Mining, Woodcutting, Excavation, Herbalism)
 │   ├── EntityDamageListener    (Combat, Swords, Axes, Unarmed, Archery, Acrobatics)
 │   ├── PlayerFishListener      (Fishing)
 │   ├── PlayerHarvestListener   (Farming)
 │   ├── PlayerJoinListener      (Load player data)
 │   └── PlayerQuitListener      (Save player data)
-├── managers/          # Business logic (SkillManager, PlayerDataManager, PartyManager)
-├── models/            # Data classes (PlayerData, PlayerSkillData, Party)
-├── party/             # Party system implementation
-└── skills/            # 12 skill implementations
+├── managers/              # Business logic (SkillManager, PlayerDataManager, PartyManager)
+├── models/                # Data classes (PlayerData, PlayerSkillData, Party)
+├── party/                 # Party system implementation
+├── skills/                # 12 skill implementations
+├── build.gradle           # Gradle build (Java 25, ShadowJar)
+├── manifest.json          # Hytale plugin descriptor
+└── config.yml             # Runtime configuration
 ```
 
 ---
 
 ## Technology Stack
 
-- **Java 21** - Modern language features
-- **Gradle 8.5+** - Build automation
+- **Java 25** - Based on official Hytale template
+- **Gradle 8.5+** - Build automation with ShadowJar
 - **Hytale Plugin API** - Event system (ECS-ready)
 - **MySQL 8.0+** - Persistent storage
 - **HikariCP 5.1.0** - High-performance connection pooling
 - **SLF4J 2.0** - Logging framework
+- **GitHub Actions** - CI/CD automation
 
 ---
 
@@ -221,7 +244,8 @@ NCRPG/
 | Party System | ✅ 100% | XP sharing, invites, management |
 | Database | ✅ 100% | Async MySQL, caching, leaderboards |
 | Configuration | ✅ 100% | Full YAML config system |
-| Build System | ✅ 100% | Gradle + one-click scripts |
+| Build System | ✅ 100% | Gradle + ShadowJar + CI/CD |
+| Template Compliance | ✅ 100% | Based on official Hytale template |
 | ECS Documentation | ✅ 100% | Migration guide for Flecs ECS |
 
 ---
@@ -290,6 +314,8 @@ build-local.bat
 - [x] All event listeners
 - [x] Commands functional
 - [x] Build system ready
+- [x] Template-based structure
+- [x] CI/CD with GitHub Actions
 - [x] ECS migration documentation
 
 ### Phase 2: ECS Migration (Day 1-7)
@@ -332,6 +358,7 @@ Free to use, modify, and distribute. Attribution appreciated!
 - **Lead Developer**: Kielian (@NadoHimself)
 - **Inspired by**: mcMMO (Bukkit/Spigot)
 - **Built for**: Hytale Early Access (2026)
+- **Template Reference**: [realBritakee/hytale-template-plugin](https://github.com/realBritakee/hytale-template-plugin)
 - **Architecture Reference**: HytaleCharts.com API Guide
 - **Special Thanks**: Hytale modding community
 
@@ -341,4 +368,4 @@ Free to use, modify, and distribute. Attribution appreciated!
 
 *Made with ❤️ for the Hytale community*
 
-*ECS-Ready | Day 1 Deployment | Shared Source Compatible*
+*Template-Based | CI/CD Ready | ECS-Ready | Day 1 Deployment | Shared Source Compatible*
