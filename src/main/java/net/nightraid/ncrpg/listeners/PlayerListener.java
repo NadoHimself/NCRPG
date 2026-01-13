@@ -1,19 +1,16 @@
 package net.nightraid.ncrpg.listeners;
 
-import com.hypixel.hytale.server.core.event.Subscribe;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
-import net.nightraid.ncrpg.NCRPGPlugin;
 
 public class PlayerListener {
     
-    private final NCRPGPlugin plugin;
-    
-    public PlayerListener(NCRPGPlugin plugin) {
-        this.plugin = plugin;
+    public PlayerListener() {
+        System.out.println("[NCRPG] PlayerListener initialisiert");
     }
     
-    @Subscribe
+    // Event Handler für Player Connect (Platzhalter)
+    // Die echte Registrierung hängt von der Hytale Event API ab
     public void onPlayerConnect(PlayerConnectEvent event) {
-        plugin.getLogger().info("[NCRPG] Spieler verbunden: " + event.getPlayer().getName());
+        System.out.println("[NCRPG] Spieler verbunden: " + event.getPlayerRef().getUsername());
     }
 }
