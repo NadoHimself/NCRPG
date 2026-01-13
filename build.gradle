@@ -38,13 +38,13 @@ dependencies {
 tasks {
     // Configure Java compilation
     compileJava {
-        options.encoding = Charsets.UTF_8.name()
+        options.encoding = 'UTF-8'
         options.release = 25  // Java 25 as confirmed by Hytale template
     }
     
     // Configure resource processing
     processResources {
-        filteringCharset = Charsets.UTF_8.name()
+        filteringCharset = 'UTF-8'
         
         // Replace placeholders in manifest.json
         def props = [
