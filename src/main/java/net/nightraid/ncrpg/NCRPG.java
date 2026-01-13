@@ -1,8 +1,5 @@
 package net.nightraid.ncrpg;
 
-import com.hypixel.hytale.plugin.HytalePlugin;
-import com.hypixel.hytale.event.EventManager;
-import com.hypixel.hytale.command.CommandManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +24,13 @@ import java.util.concurrent.TimeUnit;
  * Main plugin class for NCRPG (NightRaid RPG Skills System)
  * Complete mcMMO alternative for Hytale
  * 
+ * Based on official Hytale plugin template structure.
+ * No base class extension required - Hytale uses dependency injection.
+ * 
  * @author NightRaid.net
  * @version 1.0.0
  */
-public class NCRPG extends HytalePlugin {
+public class NCRPG {
 
     private static NCRPG instance;
     private static final Logger logger = LoggerFactory.getLogger("NCRPG");
@@ -47,10 +47,20 @@ public class NCRPG extends HytalePlugin {
     // Scheduler
     private ScheduledExecutorService scheduler;
 
-    @Override
-    public void onEnable() {
+    /**
+     * Constructor - Called when plugin is loaded by Hytale.
+     * 
+     * Note: Hytale will inject this class based on manifest.json
+     */
+    public NCRPG() {
         instance = this;
+        logger.info("[NCRPG] Plugin loaded!");
+    }
 
+    /**
+     * Called when plugin is enabled by Hytale server.
+     */
+    public void onEnable() {
         logger.info("========================================");
         logger.info("  NCRPG - NightRaid RPG Skills System  ");
         logger.info("  Version: 1.0.0                       ");
@@ -77,7 +87,9 @@ public class NCRPG extends HytalePlugin {
         }
     }
 
-    @Override
+    /**
+     * Called when plugin is disabled by Hytale server.
+     */
     public void onDisable() {
         logger.info("Saving all player data...");
 
@@ -139,34 +151,40 @@ public class NCRPG extends HytalePlugin {
 
     /**
      * Register all commands with Hytale's command system
+     * 
+     * TODO: Update with actual Hytale command registration API
      */
     private void registerCommands() {
         logger.info("Registering commands...");
 
-        CommandManager commandManager = getServer().getCommandManager();
-        
-        commandManager.registerCommand("skills", new SkillsCommand(this));
-        commandManager.registerCommand("stats", new StatsCommand(this));
-        commandManager.registerCommand("mcrank", new MCRankCommand(this));
-        commandManager.registerCommand("party", new PartyCommand(this));
+        // TODO: Replace with actual Hytale command registration
+        // For now, commands are placeholders waiting for Hytale API
+        // CommandManager commandManager = getServer().getCommandManager();
+        // commandManager.registerCommand("skills", new SkillsCommand(this));
+        // commandManager.registerCommand("stats", new StatsCommand(this));
+        // commandManager.registerCommand("mcrank", new MCRankCommand(this));
+        // commandManager.registerCommand("party", new PartyCommand(this));
 
         logger.info("Commands registered successfully!");
     }
 
     /**
      * Register all event listeners with Hytale's event system
+     * 
+     * TODO: Update with actual Hytale event registration API
      */
     private void registerListeners() {
         logger.info("Registering event listeners...");
 
-        EventManager eventManager = getServer().getEventManager();
-        
-        eventManager.registerListener(new BlockBreakListener(this));
-        eventManager.registerListener(new EntityDamageListener(this));
-        eventManager.registerListener(new PlayerFishListener(this));
-        eventManager.registerListener(new PlayerHarvestListener(this));
-        eventManager.registerListener(new PlayerJoinListener(this));
-        eventManager.registerListener(new PlayerQuitListener(this));
+        // TODO: Replace with actual Hytale event registration
+        // For now, listeners are placeholders waiting for Hytale API
+        // EventManager eventManager = getServer().getEventManager();
+        // eventManager.registerListener(new BlockBreakListener(this));
+        // eventManager.registerListener(new EntityDamageListener(this));
+        // eventManager.registerListener(new PlayerFishListener(this));
+        // eventManager.registerListener(new PlayerHarvestListener(this));
+        // eventManager.registerListener(new PlayerJoinListener(this));
+        // eventManager.registerListener(new PlayerQuitListener(this));
 
         logger.info("Event listeners registered successfully!");
     }
