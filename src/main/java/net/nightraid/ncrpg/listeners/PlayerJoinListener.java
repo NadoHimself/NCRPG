@@ -1,20 +1,19 @@
 package net.nightraid.ncrpg.listeners;
 
+import com.hypixel.hytale.event.EventHandler;
+import com.hypixel.hytale.event.Listener;
+import com.hypixel.hytale.event.player.PlayerJoinEvent;
+import com.hypixel.hytale.entity.player.Player;
+
 import net.nightraid.ncrpg.NCRPG;
 import net.nightraid.ncrpg.managers.PlayerDataManager;
 import net.nightraid.ncrpg.models.PlayerData;
 import net.nightraid.ncrpg.models.SkillType;
 
-// NOTE: Replace with Hytale API imports
-// import org.bukkit.event.EventHandler;
-// import org.bukkit.event.Listener;
-// import org.bukkit.event.player.PlayerJoinEvent;
-// import org.bukkit.entity.Player;
-
 /**
  * Handles player join events - loads player data from database
  */
-public class PlayerJoinListener /* implements Listener */ {
+public class PlayerJoinListener implements Listener {
     private final NCRPG plugin;
     private final PlayerDataManager playerDataManager;
 
@@ -23,48 +22,48 @@ public class PlayerJoinListener /* implements Listener */ {
         this.playerDataManager = plugin.getPlayerDataManager();
     }
 
-    // NOTE: Replace with Hytale API
-    // @EventHandler
-    public void onPlayerJoin(Object event /* PlayerJoinEvent */) {
-        // NOTE: Replace with Hytale API
-        /*
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         
         // Load player data asynchronously
         playerDataManager.loadPlayerData(player.getUniqueId(), player.getName())
             .thenAccept(data -> {
                 if (data != null) {
-                    plugin.getLogger().info("Loaded data for player: " + player.getName());
+                    NCRPG.getPluginLogger().info("Loaded data for player: " + player.getName());
                     
                     // Update level caps based on permissions
                     updateLevelCaps(player, data);
+                    
+                    // Send welcome message
+                    player.sendMessage("§a[NCRPG] §7Welcome! Your skill data has been loaded.");
                 } else {
-                    plugin.getLogger().warning("Failed to load data for player: " + player.getName());
+                    NCRPG.getPluginLogger().warn("Failed to load data for player: " + player.getName());
+                    player.sendMessage("§c[NCRPG] §7Failed to load your skill data. Contact an admin!");
                 }
             })
             .exceptionally(ex -> {
-                plugin.getLogger().severe("Error loading player data: " + ex.getMessage());
-                ex.printStackTrace();
+                NCRPG.getPluginLogger().error("Error loading player data: " + ex.getMessage(), ex);
+                player.sendMessage("§c[NCRPG] §7An error occurred while loading your data.");
                 return null;
             });
-        */
     }
 
-    private void updateLevelCaps(Object player, PlayerData data) {
-        // NOTE: Replace with Hytale API
-        /*
+    /**
+     * Update skill level caps based on player permissions
+     */
+    private void updateLevelCaps(Player player, PlayerData data) {
         for (SkillType skillType : SkillType.values()) {
-            // Check for permission-based level caps
-            // Format: ncrpg.{skill}.cap.{level}
             int levelCap = getPlayerLevelCap(player, skillType);
             data.getSkillData(skillType).setSkillCap(levelCap);
         }
-        */
     }
 
-    private int getPlayerLevelCap(Object player, SkillType skillType) {
-        // NOTE: Replace with Hytale API
-        /*
+    /**
+     * Get the maximum level cap for a skill based on permissions
+     * Format: ncrpg.{skill}.cap.{level}
+     */
+    private int getPlayerLevelCap(Player player, SkillType skillType) {
         String skillName = skillType.name().toLowerCase();
         
         // Check permissions from highest to lowest
@@ -73,7 +72,6 @@ public class PlayerJoinListener /* implements Listener */ {
                 return level;
             }
         }
-        */
         
         // Default cap from config
         return plugin.getConfigManager().getInt(
