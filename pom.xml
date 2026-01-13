@@ -85,9 +85,9 @@
                     <source>25</source>
                     <target>25</target>
                     <release>25</release>
-                    <!-- Exclude broken ncrpg package from compilation -->
+                    <!-- Exclude old test plugin package from compilation -->
                     <excludes>
-                        <exclude>**/ncrpg/**</exclude>
+                        <exclude>**/hytaletestplugin/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
