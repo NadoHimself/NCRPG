@@ -1,8 +1,10 @@
 package net.nightraid.ncrpg;
 
-// NOTE: Replace with Hytale API imports
-// import com.hytale.api.plugin.Plugin;
-// import com.hytale.api.Server;
+import com.hypixel.hytale.plugin.HytalePlugin;
+import com.hypixel.hytale.event.EventManager;
+import com.hypixel.hytale.command.CommandManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.nightraid.ncrpg.abilities.AbilityCooldownManager;
 import net.nightraid.ncrpg.abilities.ActiveAbilityManager;
@@ -20,16 +22,18 @@ import net.nightraid.ncrpg.managers.SkillManager;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * Main plugin class for NCRPG (NightRaid RPG Skills System)
  * Complete mcMMO alternative for Hytale
+ * 
+ * @author NightRaid.net
+ * @version 1.0.0
  */
-public class NCRPG /* extends Plugin */ {
+public class NCRPG extends HytalePlugin {
 
     private static NCRPG instance;
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger("NCRPG");
 
     // Managers
     private ConfigManager configManager;
@@ -43,13 +47,9 @@ public class NCRPG /* extends Plugin */ {
     // Scheduler
     private ScheduledExecutorService scheduler;
 
-    /**
-     * Plugin enable method
-     * NOTE: Replace with Hytale API onEnable()
-     */
+    @Override
     public void onEnable() {
         instance = this;
-        logger = getLogger();
 
         logger.info("========================================");
         logger.info("  NCRPG - NightRaid RPG Skills System  ");
@@ -57,51 +57,53 @@ public class NCRPG /* extends Plugin */ {
         logger.info("  Author: NightRaid.net                ");
         logger.info("========================================");
 
-        // Initialize managers
-        initializeManagers();
+        try {
+            // Initialize managers
+            initializeManagers();
 
-        // Register commands
-        registerCommands();
+            // Register commands
+            registerCommands();
 
-        // Register listeners
-        registerListeners();
+            // Register listeners
+            registerListeners();
 
-        // Start auto-save task
-        startAutoSaveTask();
+            // Start auto-save task
+            startAutoSaveTask();
 
-        logger.info("NCRPG has been enabled successfully!");
+            logger.info("NCRPG has been enabled successfully!");
+        } catch (Exception e) {
+            logger.error("Failed to enable NCRPG!", e);
+            throw new RuntimeException("Plugin initialization failed", e);
+        }
     }
 
-    /**
-     * Plugin disable method
-     * NOTE: Replace with Hytale API onDisable()
-     */
+    @Override
     public void onDisable() {
         logger.info("Saving all player data...");
 
-        // Save all cached player data
-        if (playerDataManager != null) {
-            playerDataManager.saveAll();
-        }
+        try {
+            // Save all cached player data
+            if (playerDataManager != null) {
+                playerDataManager.saveAll();
+            }
 
-        // Shutdown scheduler
-        if (scheduler != null && !scheduler.isShutdown()) {
-            scheduler.shutdown();
-            try {
+            // Shutdown scheduler
+            if (scheduler != null && !scheduler.isShutdown()) {
+                scheduler.shutdown();
                 if (!scheduler.awaitTermination(10, TimeUnit.SECONDS)) {
                     scheduler.shutdownNow();
                 }
-            } catch (InterruptedException e) {
-                scheduler.shutdownNow();
             }
-        }
 
-        // Close database connection
-        if (databaseManager != null) {
-            databaseManager.close();
-        }
+            // Close database connection
+            if (databaseManager != null) {
+                databaseManager.close();
+            }
 
-        logger.info("NCRPG has been disabled!");
+            logger.info("NCRPG has been disabled successfully!");
+        } catch (Exception e) {
+            logger.error("Error during plugin shutdown", e);
+        }
     }
 
     /**
@@ -136,48 +138,35 @@ public class NCRPG /* extends Plugin */ {
     }
 
     /**
-     * Register all commands
-     * NOTE: Replace with Hytale API command registration
+     * Register all commands with Hytale's command system
      */
     private void registerCommands() {
         logger.info("Registering commands...");
 
-        // NOTE: Replace with Hytale API
-        // getCommand("skills").setExecutor(new SkillsCommand(this));
-        // getCommand("stats").setExecutor(new StatsCommand(this));
-        // getCommand("mcrank").setExecutor(new MCRankCommand(this));
-        // getCommand("party").setExecutor(new PartyCommand(this));
-
-        new SkillsCommand(this);
-        new StatsCommand(this);
-        new MCRankCommand(this);
-        new PartyCommand(this);
+        CommandManager commandManager = getServer().getCommandManager();
+        
+        commandManager.registerCommand("skills", new SkillsCommand(this));
+        commandManager.registerCommand("stats", new StatsCommand(this));
+        commandManager.registerCommand("mcrank", new MCRankCommand(this));
+        commandManager.registerCommand("party", new PartyCommand(this));
 
         logger.info("Commands registered successfully!");
     }
 
     /**
-     * Register all event listeners
-     * NOTE: Replace with Hytale API event registration
+     * Register all event listeners with Hytale's event system
      */
     private void registerListeners() {
         logger.info("Registering event listeners...");
 
-        // NOTE: Replace with Hytale API
-        // PluginManager pm = getServer().getPluginManager();
-        // pm.registerEvents(new BlockBreakListener(this), this);
-        // pm.registerEvents(new EntityDamageListener(this), this);
-        // pm.registerEvents(new PlayerFishListener(this), this);
-        // pm.registerEvents(new PlayerHarvestListener(this), this);
-        // pm.registerEvents(new PlayerJoinListener(this), this);
-        // pm.registerEvents(new PlayerQuitListener(this), this);
-
-        new BlockBreakListener(this);
-        new EntityDamageListener(this);
-        new PlayerFishListener(this);
-        new PlayerHarvestListener(this);
-        new PlayerJoinListener(this);
-        new PlayerQuitListener(this);
+        EventManager eventManager = getServer().getEventManager();
+        
+        eventManager.registerListener(new BlockBreakListener(this));
+        eventManager.registerListener(new EntityDamageListener(this));
+        eventManager.registerListener(new PlayerFishListener(this));
+        eventManager.registerListener(new PlayerHarvestListener(this));
+        eventManager.registerListener(new PlayerJoinListener(this));
+        eventManager.registerListener(new PlayerQuitListener(this));
 
         logger.info("Event listeners registered successfully!");
     }
@@ -191,8 +180,12 @@ public class NCRPG /* extends Plugin */ {
         scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(() -> {
             logger.info("Auto-saving player data...");
-            playerDataManager.saveAll();
-            logger.info("Auto-save complete!");
+            try {
+                playerDataManager.saveAll();
+                logger.info("Auto-save complete!");
+            } catch (Exception e) {
+                logger.error("Error during auto-save", e);
+            }
         }, intervalMinutes, intervalMinutes, TimeUnit.MINUTES);
 
         logger.info("Auto-save task started (every " + intervalMinutes + " minutes)");
@@ -204,10 +197,8 @@ public class NCRPG /* extends Plugin */ {
         return instance;
     }
 
-    public Logger getLogger() {
-        // NOTE: Replace with Hytale API logger
-        // return super.getLogger();
-        return Logger.getLogger("NCRPG");
+    public static Logger getPluginLogger() {
+        return logger;
     }
 
     public ConfigManager getConfigManager() {
