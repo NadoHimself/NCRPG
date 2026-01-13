@@ -12,7 +12,7 @@ public enum SkillType {
     EXCAVATION("Excavation", "🏺"),
     HERBALISM("Herbalism", "🌿"),
     SWORDS("Swords", "⚔"),
-    AXES("Axes", "🪓"),
+    AXES("Axes", "🔨"),  // Changed from duplicate 🪓 to 🔨
     ARCHERY("Archery", "🏹"),
     UNARMED("Unarmed", "👊"),
     COMBAT("Combat", "⚡");
