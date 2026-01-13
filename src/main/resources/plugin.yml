@@ -1,0 +1,45 @@
+# NOTE: Replace with Hytale plugin.yml equivalent
+name: NCRPG
+version: 1.0.0
+main: net.nightraid.ncrpg.NCRPG
+author: NightRaid.net
+description: Complete mcMMO Alternative for Hytale
+
+commands:
+  skills:
+    description: Display all your skill levels
+    usage: /skills
+    permission: ncrpg.skills
+  stats:
+    description: Display detailed stats for a specific skill
+    usage: /stats <skill>
+    permission: ncrpg.stats
+  mcrank:
+    description: View leaderboards
+    usage: /mcrank [skill]
+    permission: ncrpg.mcrank
+  party:
+    description: Manage your party
+    usage: /party <create|invite|accept|leave|disband>
+    permission: ncrpg.party
+
+permissions:
+  ncrpg.*:
+    description: Grants all NCRPG permissions
+    children:
+      ncrpg.skills: true
+      ncrpg.stats: true
+      ncrpg.mcrank: true
+      ncrpg.party: true
+  ncrpg.skills:
+    description: Use /skills command
+    default: true
+  ncrpg.stats:
+    description: Use /stats command
+    default: true
+  ncrpg.mcrank:
+    description: Use /mcrank command
+    default: true
+  ncrpg.party:
+    description: Use party commands
+    default: true

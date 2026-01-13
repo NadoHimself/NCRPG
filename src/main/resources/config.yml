@@ -1,0 +1,303 @@
+# NCRPG Configuration
+# NightRaid RPG Skills System
+
+# Database Settings
+database:
+  host: localhost
+  port: 3306
+  database: ncrpg
+  username: root
+  password: password
+  pool-size: 10
+  connection-timeout: 30000
+
+# General Settings
+general:
+  # Auto-save interval in minutes
+  auto-save-interval: 5
+  # Base XP multiplier
+  xp-multiplier: 1.0
+  # XP formula: baseXP * (level^exponent)
+  xp-base-per-level: 1000
+  xp-exponent: 1.5
+  # Milestone announcements (every X levels)
+  milestone-interval: 10
+
+# Party Settings
+party:
+  enabled: true
+  max-size: 6
+  xp-share-range: 30.0
+  xp-bonus-multiplier: 1.1
+
+# Skill Settings
+skills:
+  mining:
+    enabled: true
+    # XP values per block
+    xp:
+      stone: 1
+      coal_ore: 3
+      iron_ore: 5
+      gold_ore: 7
+      diamond_ore: 10
+      emerald_ore: 15
+      ancient_debris: 20
+    # Double Drop ability
+    double-drop:
+      unlock-level: 25
+      max-chance: 75
+      max-level: 100
+    # Super Breaker ability
+    super-breaker:
+      unlock-level: 50
+      duration: 30
+      cooldown: 240
+      speed-multiplier: 3.0
+
+  woodcutting:
+    enabled: true
+    xp:
+      oak_log: 2
+      spruce_log: 2
+      birch_log: 2
+      jungle_log: 3
+      acacia_log: 2
+      dark_oak_log: 3
+    double-drop:
+      unlock-level: 25
+      max-chance: 75
+      max-level: 100
+    # Tree Feller ability
+    tree-feller:
+      unlock-level: 40
+      duration: 20
+      cooldown: 180
+      max-blocks: 100
+
+  farming:
+    enabled: true
+    xp:
+      wheat: 2
+      carrot: 2
+      potato: 2
+      beetroot: 2
+      pumpkin: 3
+      melon: 3
+      sugar_cane: 1
+    triple-drop:
+      unlock-level: 50
+      max-chance: 30
+      max-level: 100
+    double-drop:
+      unlock-level: 20
+      max-chance: 60
+      max-level: 80
+    # Green Terra ability
+    green-terra:
+      unlock-level: 60
+      duration: 25
+      cooldown: 240
+
+  fishing:
+    enabled: true
+    xp:
+      fish: 10
+      treasure: 50
+      junk: 5
+    # Treasure Hunter tiers
+    treasure-hunter:
+      tier1-level: 25
+      tier2-level: 50
+      tier3-level: 75
+      tier4-level: 100
+    # Magic Hunter
+    magic-hunter:
+      unlock-level: 40
+      max-chance: 20
+      max-level: 100
+    # Shake ability
+    shake:
+      unlock-level: 30
+      max-chance: 50
+      max-level: 100
+
+  acrobatics:
+    enabled: true
+    xp:
+      fall-damage: 2
+      dodge: 5
+    # Roll ability
+    roll:
+      unlock-level: 10
+      max-chance: 50
+      max-level: 100
+      damage-reduction: 50
+    # Graceful Roll
+    graceful-roll:
+      unlock-level: 25
+      max-chance: 75
+      max-level: 100
+      damage-reduction: 95
+    # Dodge
+    dodge:
+      unlock-level: 35
+      max-chance: 25
+      max-level: 100
+
+  excavation:
+    enabled: true
+    xp:
+      dirt: 1
+      sand: 1
+      gravel: 2
+      clay: 2
+      mycelium: 3
+      soul_sand: 2
+    # Archaeology treasure tiers
+    archaeology:
+      tier1-level: 20
+      tier2-level: 40
+      tier3-level: 60
+      tier4-level: 80
+    # Giga Drill Breaker
+    giga-drill-breaker:
+      unlock-level: 50
+      duration: 30
+      cooldown: 240
+      multiplier: 3.0
+
+  herbalism:
+    enabled: true
+    xp:
+      flower: 1
+      tall_grass: 1
+      mushroom: 2
+      nether_wart: 3
+    # Green Thumb
+    green-thumb:
+      unlock-level: 15
+      max-chance: 100
+      max-level: 50
+    double-drop:
+      unlock-level: 30
+      max-chance: 75
+      max-level: 100
+
+  swords:
+    enabled: true
+    xp:
+      zombie: 5
+      skeleton: 5
+      spider: 3
+      creeper: 6
+      enderman: 10
+      player: 20
+    # Damage multiplier
+    damage-multiplier:
+      base: 1.0
+      per-level: 0.01
+      max-level: 100
+    # Rupture (bleed)
+    rupture:
+      unlock-level: 30
+      max-chance: 50
+      max-level: 100
+      duration: 5
+      damage-per-tick: 1
+    # Counter Attack
+    counter-attack:
+      unlock-level: 50
+      max-chance: 25
+      max-level: 100
+      damage-multiplier: 1.5
+
+  axes:
+    enabled: true
+    xp:
+      zombie: 5
+      skeleton: 5
+      spider: 3
+      creeper: 6
+      enderman: 10
+      player: 20
+    damage-multiplier:
+      base: 1.0
+      per-level: 0.012
+      max-level: 100
+    # Critical Strike
+    critical-strike:
+      unlock-level: 25
+      max-chance: 40
+      max-level: 100
+      damage-multiplier: 2.0
+    # Skull Splitter
+    skull-splitter:
+      unlock-level: 60
+      duration: 10
+      cooldown: 180
+      aoe-range: 5.0
+
+  archery:
+    enabled: true
+    xp:
+      zombie: 4
+      skeleton: 4
+      spider: 3
+      creeper: 5
+      enderman: 8
+      player: 15
+    damage-multiplier:
+      base: 1.0
+      per-level: 0.008
+      max-level: 100
+    # Daze
+    daze:
+      unlock-level: 30
+      max-chance: 30
+      max-level: 100
+      duration: 3
+    # Arrow Retrieval
+    arrow-retrieval:
+      unlock-level: 20
+      max-chance: 50
+      max-level: 100
+
+  unarmed:
+    enabled: true
+    xp:
+      zombie: 4
+      skeleton: 4
+      spider: 2
+      creeper: 5
+      enderman: 8
+      player: 15
+    damage-multiplier:
+      base: 1.0
+      per-level: 0.01
+      max-level: 100
+    # Disarm
+    disarm:
+      unlock-level: 35
+      max-chance: 30
+      max-level: 100
+    # Berserk
+    berserk:
+      unlock-level: 50
+      duration: 20
+      cooldown: 240
+      damage-multiplier: 1.5
+
+  combat:
+    enabled: true
+    xp:
+      zombie: 3
+      skeleton: 3
+      spider: 2
+      creeper: 4
+      enderman: 7
+      player: 12
+    damage-multiplier:
+      base: 1.0
+      per-level: 0.005
+      max-level: 100
