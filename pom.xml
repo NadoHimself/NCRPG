@@ -16,11 +16,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
-        <hytale.version>1.0.0</hytale.version>
     </properties>
 
     <repositories>
-        <!-- Maven Central Repository -->
         <repository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2</url>
@@ -28,12 +26,13 @@
     </repositories>
 
     <dependencies>
-        <!-- Hytale Server API -->
+        <!-- Hytale Server API - Local JAR -->
         <dependency>
             <groupId>com.hypixel.hytale</groupId>
             <artifactId>hytale-server</artifactId>
-            <version>${hytale.version}</version>
-            <scope>provided</scope>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/HytaleServer.jar</systemPath>
         </dependency>
 
         <!-- MySQL Driver -->
