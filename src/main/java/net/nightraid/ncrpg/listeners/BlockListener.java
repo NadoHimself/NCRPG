@@ -1,19 +1,16 @@
 package net.nightraid.ncrpg.listeners;
 
-import com.hypixel.hytale.server.core.event.Subscribe;
-import com.hypixel.hytale.server.core.event.events.block.BreakBlockEvent;
-import net.nightraid.ncrpg.NCRPGPlugin;
+import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 
 public class BlockListener {
     
-    private final NCRPGPlugin plugin;
-    
-    public BlockListener(NCRPGPlugin plugin) {
-        this.plugin = plugin;
+    public BlockListener() {
+        System.out.println("[NCRPG] BlockListener initialisiert");
     }
     
-    @Subscribe
+    // Event Handler für Block Break (Platzhalter)
+    // Die echte Registrierung hängt von der Hytale Event API ab
     public void onBlockBreak(BreakBlockEvent event) {
-        plugin.getLogger().info("[NCRPG] Block wurde abgebaut!");
+        System.out.println("[NCRPG] Block wurde abgebaut: " + event.getBlockType());
     }
 }
