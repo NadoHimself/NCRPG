@@ -1,57 +1,63 @@
 {
-  "id": "ncrpg",
-  "name": "NCRPG",
-  "version": "1.0.0",
-  "description": "Complete mcMMO alternative for Hytale featuring 12 skills, party system, and active abilities",
-  "authors": ["NightRaid.net"],
-  "main": "net.nightraid.ncrpg.NCRPG",
-  "dependencies": [],
-  "permissions": [
+  "Group": "NightRaid",
+  "Name": "NCRPG",
+  "Version": "${version}",
+  "Description": "${description}",
+  "Authors": [
     {
-      "name": "ncrpg.skills",
-      "description": "Use /skills command",
-      "default": "true"
-    },
-    {
-      "name": "ncrpg.stats",
-      "description": "Use /stats command",
-      "default": "true"
-    },
-    {
-      "name": "ncrpg.mcrank",
-      "description": "Use /mcrank command",
-      "default": "true"
-    },
-    {
-      "name": "ncrpg.party",
-      "description": "Use party commands",
-      "default": "true"
+      "Name": "Kielian (NadoHimself)",
+      "Email": "contact@nightraid.net",
+      "Url": "https://nightraid.net"
     }
   ],
-  "commands": [
-    {
-      "name": "skills",
-      "description": "Display all your skill levels",
-      "usage": "/skills",
-      "permission": "ncrpg.skills"
+  "Website": "https://github.com/NadoHimself/NCRPG",
+  "Main": "net.nightraid.ncrpg.NCRPG",
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "DisabledByDefault": false,
+  "Permissions": {
+    "ncrpg.skills": {
+      "description": "View skill levels",
+      "default": true
     },
-    {
-      "name": "stats",
-      "description": "Display detailed stats for a specific skill",
-      "usage": "/stats <skill>",
-      "permission": "ncrpg.stats"
+    "ncrpg.stats": {
+      "description": "View detailed skill stats",
+      "default": true
     },
-    {
-      "name": "mcrank",
+    "ncrpg.mcrank": {
       "description": "View leaderboards",
-      "usage": "/mcrank [skill]",
-      "permission": "ncrpg.mcrank"
+      "default": true
     },
-    {
-      "name": "party",
-      "description": "Manage your party",
-      "usage": "/party <create|invite|accept|leave|disband>",
-      "permission": "ncrpg.party"
+    "ncrpg.party": {
+      "description": "Use party system",
+      "default": true
+    },
+    "ncrpg.admin": {
+      "description": "Admin commands",
+      "default": false
     }
-  ]
+  },
+  "Commands": {
+    "skills": {
+      "description": "View all your skill levels",
+      "permission": "ncrpg.skills",
+      "usage": "/skills"
+    },
+    "stats": {
+      "description": "View detailed stats for a specific skill",
+      "permission": "ncrpg.stats",
+      "usage": "/stats <skill>"
+    },
+    "mcrank": {
+      "description": "View skill leaderboards",
+      "permission": "ncrpg.mcrank",
+      "usage": "/mcrank [skill]"
+    },
+    "party": {
+      "description": "Party management commands",
+      "permission": "ncrpg.party",
+      "usage": "/party <create|invite|accept|leave|list>"
+    }
+  }
 }
