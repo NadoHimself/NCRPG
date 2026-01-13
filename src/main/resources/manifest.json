@@ -1,0 +1,57 @@
+{
+  "id": "ncrpg",
+  "name": "NCRPG",
+  "version": "1.0.0",
+  "description": "Complete mcMMO alternative for Hytale featuring 12 skills, party system, and active abilities",
+  "authors": ["NightRaid.net"],
+  "main": "net.nightraid.ncrpg.NCRPG",
+  "dependencies": [],
+  "permissions": [
+    {
+      "name": "ncrpg.skills",
+      "description": "Use /skills command",
+      "default": "true"
+    },
+    {
+      "name": "ncrpg.stats",
+      "description": "Use /stats command",
+      "default": "true"
+    },
+    {
+      "name": "ncrpg.mcrank",
+      "description": "Use /mcrank command",
+      "default": "true"
+    },
+    {
+      "name": "ncrpg.party",
+      "description": "Use party commands",
+      "default": "true"
+    }
+  ],
+  "commands": [
+    {
+      "name": "skills",
+      "description": "Display all your skill levels",
+      "usage": "/skills",
+      "permission": "ncrpg.skills"
+    },
+    {
+      "name": "stats",
+      "description": "Display detailed stats for a specific skill",
+      "usage": "/stats <skill>",
+      "permission": "ncrpg.stats"
+    },
+    {
+      "name": "mcrank",
+      "description": "View leaderboards",
+      "usage": "/mcrank [skill]",
+      "permission": "ncrpg.mcrank"
+    },
+    {
+      "name": "party",
+      "description": "Manage your party",
+      "usage": "/party <create|invite|accept|leave|disband>",
+      "permission": "ncrpg.party"
+    }
+  ]
+}
