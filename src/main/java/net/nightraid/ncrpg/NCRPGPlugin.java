@@ -1,29 +1,31 @@
 package net.nightraid.ncrpg;
 
-import com.hypixel.hytale.server.core.plugin.AbstractPlugin;
 import net.nightraid.ncrpg.listeners.PlayerListener;
 import net.nightraid.ncrpg.listeners.BlockListener;
 
-public class NCRPGPlugin extends AbstractPlugin {
+public class NCRPGPlugin {
     
-    @Override
-    public void onLoad() {
-        getLogger().info("NCRPG wird geladen...");
+    private static NCRPGPlugin instance;
+    
+    public NCRPGPlugin() {
+        instance = this;
     }
     
-    @Override
     public void onEnable() {
-        getLogger().info("NCRPG aktiviert!");
+        System.out.println("[NCRPG] Plugin wird aktiviert...");
         
-        // Listener registrieren
-        getEventBus().register(new PlayerListener(this));
-        getEventBus().register(new BlockListener(this));
+        // Listener registrieren (Platzhalter - echte Registrierung abhängig von Hytale API)
+        PlayerListener playerListener = new PlayerListener();
+        BlockListener blockListener = new BlockListener();
         
-        getLogger().info("NCRPG Listener erfolgreich registriert!");
+        System.out.println("[NCRPG] Plugin erfolgreich aktiviert!");
     }
     
-    @Override
     public void onDisable() {
-        getLogger().info("NCRPG deaktiviert!");
+        System.out.println("[NCRPG] Plugin wird deaktiviert...");
+    }
+    
+    public static NCRPGPlugin getInstance() {
+        return instance;
     }
 }
