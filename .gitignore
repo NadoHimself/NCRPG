@@ -1,0 +1,49 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.swp
+*.swo
+*.swn
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# NetBeans
+nbproject/private/
+nbdist/
+.nb-gradle/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test server
+run/
+
+# Logs
+logs/
+*.log
+
+# Backup files
+*~
+*.bak
+*.tmp
+
+# Build outputs
+target/
+out/
+
+# Plugin development
+libs/*.jar
+!libs/HytaleServer.jar
