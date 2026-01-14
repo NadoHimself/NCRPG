@@ -1,0 +1,8 @@
+{
+  "Group": "NightRaid",
+  "Name": "NCRPG",
+  "Version": "1.0.0-SNAPSHOT",
+  "Description": "Complete mcMMO Alternative for Hytale",
+  "Author": "NightRaid.net",
+  "Main": "net.nightraid.ncrpg.NCRPGPlugin"
+}
