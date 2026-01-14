@@ -1,233 +1,129 @@
-# 🎮 NCRPG - NightRaid RPG Plugin for Hytale
+# NCRPG - NightRaid Complete RPG
 
-![Java 25](https://img.shields.io/badge/Java-25-orange.svg)
-![Hytale](https://img.shields.io/badge/Hytale-1.0.0-blue.svg)
-![Status](https://img.shields.io/badge/Status-In_Development-yellow.svg)
+> Complete mcMMO Alternative for Hytale
 
-**Complete mcMMO Alternative Plugin for Hytale** - A comprehensive RPG system with 12 skills, party system, MySQL database, and active abilities.
+## 🎮 Features
 
----
+- **Skills System** - Track player progression
+- **Events** - Listen to player and block events
+- **Database** - MySQL/HikariCP support
+- **Lightweight** - Minimal overhead
 
-## 🎯 Features
+## 📋 Requirements
 
-### Player Skills (12 Skills)
-- ⚔️ **Combat Skills**: Swords, Axes, Archery, Unarmed
-- 🔨 **Mining Skills**: Mining, Excavation
-- 🌳 **Gathering Skills**: Woodcutting, Herbalism, Fishing
-- 🏭 **Crafting Skills**: Repair, Alchemy, Enchanting
+- Java 25 JDK ([Download](https://www.oracle.com/java/technologies/downloads/))
+- Gradle 8.x (included via wrapper)
+- Hytale Server JAR
 
-### Core Features
-- 📈 **Leveling System** - Gain XP and level up skills
-- 🔥 **Active Abilities** - Special abilities for each skill
-- 👥 **Party System** - Team up with friends
-- 💾 **MySQL Database** - Persistent player data storage
-- 🏆 **Leaderboards** - Compete with other players
+## 🚀 Quick Start
 
----
-
-## 🛠️ Building the Plugin
-
-### Prerequisites
-
-- **Java 25** ([Download Temurin](https://adoptium.net/temurin/releases/?version=25))
-- **Maven 3.9+** ([Download](https://maven.apache.org/download.cgi))
-- **HytaleServer.jar** (from your Hytale installation)
-
-### Quick Build
+### 1. Clone Repository
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/NadoHimself/NCRPG.git
 cd NCRPG
-
-# 2. Create libs directory
-mkdir libs
-
-# 3. Copy HytaleServer.jar to libs/
-# Windows:
-copy "%appdata%\Hytale\install\release\package\game\latest\Server\HytaleServer.jar" libs\
-
-# Linux:
-cp ~/.local/share/Hytale/install/release/package/game/latest/Server/HytaleServer.jar libs/
-
-# macOS:
-cp ~/Library/Application\ Support/Hytale/install/release/package/game/latest/Server/HytaleServer.jar libs/
-
-# 4. Build the plugin
-mvn clean package
 ```
 
-**Output:** `target/NCRPG-1.0.0-SNAPSHOT.jar`
+### 2. Add Hytale Server JAR
 
-📚 **Detailed instructions:** See [BUILD.md](BUILD.md)
+Place `HytaleServer.jar` in the `libs/` folder:
 
----
+```
+NCRPG/
+└── libs/
+    └── HytaleServer.jar  ← Place here
+```
+
+### 3. Build Plugin
+
+**Windows:**
+```powershell
+.\gradlew.bat shadowJar
+```
+
+**Linux/Mac:**
+```bash
+./gradlew shadowJar
+```
+
+### 4. Find Output
+
+Your plugin JAR will be in:
+```
+build/libs/NCRPG-1.0.0-SNAPSHOT.jar
+```
 
 ## 📦 Installation
 
-### Server Installation
+1. Copy `NCRPG-1.0.0-SNAPSHOT.jar` to your Hytale server's `plugins/` folder
+2. Start your Hytale server
+3. Look for startup messages:
+   ```
+   [NCRPG] Plugin wird aktiviert...
+   [NCRPG] Plugin erfolgreich aktiviert!
+   ```
 
-1. **Build or download** the plugin JAR
-2. **Copy** `NCRPG-1.0.0-SNAPSHOT.jar` to your Hytale server plugins folder:
+## 🔧 Development
 
-```bash
-# Windows
-copy target\NCRPG-1.0.0-SNAPSHOT.jar %appdata%\Hytale\UserData\Mods\
-
-# Linux
-cp target/NCRPG-1.0.0-SNAPSHOT.jar ~/.local/share/Hytale/UserData/Mods/
-
-# macOS
-cp target/NCRPG-1.0.0-SNAPSHOT.jar ~/Library/Application\ Support/Hytale/UserData/Mods/
-```
-
-3. **Restart** your Hytale server
-4. **Configure** `config.yml` (auto-generated on first run)
-
----
-
-## 🤖 GitHub Actions Build
-
-This repository uses GitHub Actions for automatic builds. To enable builds:
-
-### 1️⃣ Encode HytaleServer.jar
+### Build Commands
 
 ```bash
-# Linux/macOS
-cat libs/HytaleServer.jar | base64 -w 0 > hytale.txt
+# Clean build
+./gradlew clean shadowJar
 
-# Windows (PowerShell)
-[Convert]::ToBase64String([IO.File]::ReadAllBytes("libs\HytaleServer.jar")) | Out-File hytale.txt
+# Compile only
+./gradlew compileJava
+
+# Run tests
+./gradlew test
 ```
-
-### 2️⃣ Add as GitHub Secret
-
-1. Go to **Settings** → **Secrets and variables** → **Actions**
-2. Click **New repository secret**
-3. Name: `HYTALE_SERVER_JAR_BASE64`
-4. Value: Paste content from `hytale.txt`
-5. Click **Add secret**
-
-### 3️⃣ Trigger Build
-
-- Push to `main` branch or
-- Go to **Actions** → **Maven Build** → **Run workflow**
-
-**Download built plugin:** Actions → Latest workflow → Artifacts → **NCRPG-Plugin**
-
----
-
-## ⚙️ Configuration
-
-### config.yml
-
-```yaml
-# Database Configuration
-database:
-  host: localhost
-  port: 3306
-  database: hytale_rpg
-  username: root
-  password: password
-
-# Skill Configuration
-skills:
-  max-level: 100
-  xp-multiplier: 1.0
-
-# Party Configuration
-party:
-  max-size: 8
-  xp-share: true
-  xp-share-range: 50
-```
-
----
-
-## 💻 Development
 
 ### Project Structure
 
 ```
 NCRPG/
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── net/nightraid/hytaletestplugin/
-│       │       ├── HytaleTestPlugin.java       # Main plugin class
-│       │       └── listeners/
-│       │           ├── PlayerListener.java      # Player events
-│       │           └── BlockListener.java       # Block events
-│       └── resources/
-│           └── plugin.yml                   # Plugin metadata
-├── libs/
-│   └── HytaleServer.jar                 # (not in repo)
-├── pom.xml                              # Maven configuration
-└── BUILD.md                             # Build instructions
+├── src/main/java/net/nightraid/ncrpg/
+│   ├── NCRPGPlugin.java          # Main plugin class
+│   └── listeners/
+│       ├── BlockListener.java    # Block event listener
+│       └── PlayerListener.java   # Player event listener
+├── src/main/resources/
+│   ├── manifest.json             # Hytale plugin manifest
+│   └── config.yml                # Plugin configuration
+├── build.gradle.kts              # Gradle build script
+├── gradle.properties             # Project properties
+└── settings.gradle.kts           # Gradle settings
 ```
 
-### Development Workflow
+## 📖 Plugin Information
 
-1. Make code changes
-2. Run `mvn clean package`
-3. Copy JAR to Hytale server
-4. Restart server and test
+- **Group:** NightRaid
+- **Name:** NCRPG
+- **Identifier:** `NCRPG`
+- **Main Class:** `net.nightraid.ncrpg.NCRPGPlugin`
+- **Version:** 1.0.0-SNAPSHOT
 
----
+## 🔌 Loading Plugin
 
-## 🐛 Troubleshooting
+On a running Hytale server:
 
-### Build fails: "Could not find artifact"
-
-**Problem:** HytaleServer.jar not found
-
-**Solution:** Make sure `libs/HytaleServer.jar` exists (see [BUILD.md](BUILD.md))
-
-### "Unsupported class file major version"
-
-**Problem:** Wrong Java version
-
-**Solution:** Install Java 25
-
-```bash
-java --version  # Should show "25.x.x"
+```
+/plugin load NCRPG
 ```
 
-### GitHub Actions build skipped
-
-**Problem:** `HYTALE_SERVER_JAR_BASE64` secret not configured
-
-**Solution:** See [GitHub Actions Build](#-github-actions-build) section above
-
----
-
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License.
 
----
+## 🤝 Contributing
 
-## 👤 Author
-
-**Kielian** ([NadoHimself](https://github.com/NadoHimself))  
-**Organization:** [NightRaid.net](https://nightraid.net)
-
----
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📧 Support
 
-- **Issues:** [GitHub Issues](https://github.com/NadoHimself/NCRPG/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/NadoHimself/NCRPG/discussions)
-- **Website:** [nightraid.net](https://nightraid.net)
+- Website: [NightRaid.net](https://nightraid.net)
+- Issues: [GitHub Issues](https://github.com/NadoHimself/NCRPG/issues)
 
 ---
 
-## ⭐ Acknowledgments
-
-- Inspired by **mcMMO** for Minecraft
-- Built for **Hytale** by Hypixel Studios
-- Community-driven development
-
----
-
-**🎉 Happy Modding!**
+**Built with ❤️ for the Hytale Community**
