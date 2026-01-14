@@ -3,8 +3,12 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = project.property("pluginGroup") as String
-version = project.property("pluginVersion") as String
+val pluginGroup: String by project
+val pluginVersion: String by project
+val pluginName: String by project
+
+group = pluginGroup
+version = pluginVersion
 
 repositories {
     mavenCentral()
@@ -30,19 +34,19 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
-    options.release.set(25)
+    options.release.set(21)
 }
 
 tasks.shadowJar {
-    archiveBaseName.set(project.property("pluginName") as String)
+    archiveBaseName.set(pluginName)
     archiveClassifier.set("")
-    archiveVersion.set(project.property("pluginVersion") as String)
+    archiveVersion.set(pluginVersion)
     
     // Relocate dependencies to avoid conflicts
     relocate("com.zaxxer.hikari", "net.nightraid.ncrpg.libs.hikari")
