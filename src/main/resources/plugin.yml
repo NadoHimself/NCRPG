@@ -1,6 +1,0 @@
-name: NCRPG
-version: 1.0.0-SNAPSHOT
-main: net.nightraid.ncrpg.NCRPGPlugin
-description: Complete mcMMO Alternative for Hytale
-author: NightRaid.net
-api-version: 1.0
